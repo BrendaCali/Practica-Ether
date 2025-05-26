@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar Palíndromos</title>
+    <style>
+        /* Reset para navegadores */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Estilos del cuerpo */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #87CEEB 0%, #FFB6C1 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Contenedor con efecto glassmorphism */
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        /* Efecto hover del contenedor */
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00BFFF, #FF69B4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        /* Contenedor de grupos de input */
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        #text-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background: #fff;
+            outline: none;
+        }
+
+        #text-input:focus {
+            border-color: #00BFFF;
+            box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        #text-input::placeholder {
+            color: #999;
+        }
+
+        #check-btn {
+            width: 100%;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #00BFFF, #FF69B4);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+        }
+
+        #check-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 191, 255, 0.3);
+        }
+
+        #check-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Contenedor de resultados */
+        #result {
+            min-height: 60px;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.4;
+        }
+
+        /* Estilo para resultado positivo (es palíndromo) - tonos celestes */
+        .result-palindrome {
+            background: linear-gradient(135deg, #40E0D0, #00CED1);
+            color: white;
+            border-color: #40E0D0;
+            animation: slideIn 0.5s ease;
+        }
+
+        /* Estilo para resultado negativo (no es palíndromo) - tonos rosas */
+        .result-not-palindrome {
+            background: linear-gradient(135deg, #FF69B4, #FF1493);
+            color: white;
+            border-color: #FF69B4;
+            animation: slideIn 0.5s ease;
+        }
+
+        .result-empty {
+            background: #f8f9fa;
+            color: #6c757d;
+            border-color: #dee2e6;
+            font-style: italic;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Estilos responsivos*/
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            #text-input, #check-btn {
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Verificador de Palíndromos</h1>
+        
+        <p class="subtitle">
+            Ingresa una palabra o frase para verificar si es un palíndromo.<br>
+            Se ignorarán espacios, puntuación y mayúsculas/minúsculas.
+        </p>
+
+        <div class="input-group">
+            <label for="text-input">Texto a verificar:</label>
+            <input 
+                type="text" 
+                id="text-input" 
+                placeholder="Ej: Anita lava la tina"
+                autocomplete="off"
+            >
+        </div>
+
+        <button id="check-btn">Verificar Palíndromo</button>
+
+        <div id="result" class="result-empty">
+            Ingresa un texto y presiona "Verificar Palíndromo"
+        </div>
+    </div>
+
+    <script>
+        function isPalindrome(str) {
+            // Limpiar la cadena: solo alfanuméricos y convertir a minúsculas
+            const cleanStr = str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+            const reversedStr = cleanStr.split('').reverse().join('');
+            
+            return cleanStr === reversedStr;
+        }
+
+        function checkPalindrome() {
+            // Obtener elementos del DOM
+            const textInput = document.getElementById('text-input');
+            const result = document.getElementById('result');
+            const inputValue = textInput.value;
+
+            // Verificar si el input está vacío
+            if (!inputValue.trim()) {
+                alert('Please input a value');
+                return;
+            }
+
+            const isAPalindrome = isPalindrome(inputValue);
+            
+            if (isAPalindrome) {
+                result.textContent = `${inputValue} is a palindrome`;
+                result.className = 'result-palindrome';
+            } else {
+                result.textContent = `${inputValue} is not a palindrome`;
+                result.className = 'result-not-palindrome';
+            }
+        }
+
+        // Event listener para el botón
+        document.getElementById('check-btn').addEventListener('click', checkPalindrome);
+
+        // Event listener para Enter en el input
+        document.getElementById('text-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPalindrome();
+            }
+        });
+
+        // Event listener para limpiar resultado cuando se modifica el input
+        document.getElementById('text-input').addEventListener('input', function() {
+            const result = document.getElementById('result');
+            
+            if (result.className !== 'result-empty') {
+                result.textContent = 'Ingresa un texto y presiona "Verificar Palíndromo"';
+                result.className = 'result-empty';
+            }
+        });
+    </script>
+</body>
+</html>
